@@ -11,16 +11,16 @@ USER_NAME=${USER:-geoserveruser}
 GEO_GROUP_NAME=${GROUP_NAME:-geoserverusers}
 
 # Add group
-if [ ! $(getent group "${GEO_GROUP_NAME}") ]; then
-  groupadd -r "${GEO_GROUP_NAME}" -g ${GROUP_ID}
-fi
+# if [ ! $(getent group "${GEO_GROUP_NAME}") ]; then
+#   groupadd -r "${GEO_GROUP_NAME}" -g ${GROUP_ID}
+# fi
 
-# Add user to system
-if id "${USER_NAME}" &>/dev/null; then
-    echo ' skipping user creation'
-else
-    useradd -l -m -d /home/"${USER_NAME}"/ -u "${USER_ID}" --gid "${GROUP_ID}" -s /bin/bash -G "${GEO_GROUP_NAME}" "${USER_NAME}"
-fi
+# # Add user to system
+# if id "${USER_NAME}" &>/dev/null; then
+#     echo ' skipping user creation'
+# else
+#     useradd -l -m -d /home/"${USER_NAME}"/ -u "${USER_ID}" --gid "${GROUP_ID}" -s /bin/bash -G "${GEO_GROUP_NAME}" "${USER_NAME}"
+# fi
 
 # Create directories
 mkdir -p  "${GEOSERVER_DATA_DIR}" "${CERT_DIR}" "${FOOTPRINTS_DATA_DIR}" "${FONTS_DIR}" "${GEOWEBCACHE_CACHE_DIR}" \
