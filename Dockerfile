@@ -4,12 +4,19 @@ ARG JAVA_HOME=/usr/local/openjdk-11
 FROM tomcat:$IMAGE_VERSION
 
 LABEL maintainer="Tim Sutton<tim@linfiniti.com>"
+
 ARG GS_VERSION=2.21.1
 ARG WAR_URL=https://downloads.sourceforge.net/project/geoserver/GeoServer/${GS_VERSION}/geoserver-${GS_VERSION}-war.zip
 ARG STABLE_PLUGIN_BASE_URL=https://sonik.dl.sourceforge.net
 ARG DOWNLOAD_ALL_STABLE_EXTENSIONS=1
 ARG DOWNLOAD_ALL_COMMUNITY_EXTENSIONS=1
 ARG HTTPS_PORT=8443
+
+ARG GEOSERVER_UID=1000
+ARG GEOSERVER_GID=100001
+ARG USER=geoserveruser
+ARG GROUP_NAME=geoserverusers
+
 ENV DEBIAN_FRONTEND=noninteractive
 #Install extra fonts to use with sld font markers
 RUN set -eux; \
@@ -26,7 +33,7 @@ RUN set -eux; \
     && aptitude update \
     && aptitude -y install gdal-bin libgdal-java; \
     dpkg-divert --local --rename --add /sbin/initctl \
-    && (echo "Yes, do as I say!" | aptitude remove --force-yes login) \
+    && (echo "Yes, do as I say!" | aptitude remove login) \
     && aptitude clean \
     && rm -rf /var/lib/apt/lists/*; \
     # verify that the binary works
@@ -61,9 +68,29 @@ RUN echo $GS_VERSION > /scripts/geoserver_version.txt ;\
 
 EXPOSE  $HTTPS_PORT
 
+# Create directories
+RUN mkdir -p ${GEOSERVER_DATA_DIR} ${CERT_DIR} ${FOOTPRINTS_DATA_DIR} ${FONTS_DIR} ${GEOWEBCACHE_CACHE_DIR} \
+${GEOSERVER_HOME} ${EXTRA_CONFIG_DIR}
+
+ENV resources_dir="/tmp/resources"
+RUN mkdir -p ${resources_dir}/plugins/gdal
+RUN mkdir -p /usr/share/fonts/opentype
+RUN mkdir -p /tomcat_apps
+RUN mkdir -p ${CATALINA_HOME}/postgres_config
+RUN mkdir -p ${STABLE_PLUGINS_DIR}
+RUN mkdir -p ${COMMUNITY_PLUGINS_DIR}
+
+RUN chmod g=u /etc/passwd && mkdir -p /home/${USER}
+
+RUN chgrp -R 0 ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} \
+    ${GEOSERVER_DATA_DIR} /scripts ${LETSENCRYPT_CERT_DIR} ${FONTS_DIR} /tmp/ /home/${USER}/ /community_plugins/ /plugins && \
+    chmod -R g=u ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} \
+    ${GEOSERVER_DATA_DIR} /scripts ${LETSENCRYPT_CERT_DIR} ${FONTS_DIR} /tmp/ /home/${USER}/ /community_plugins/ /plugins
 
 RUN echo 'figlet -t "Kartoza Docker GeoServer"' >> ~/.bashrc
 
 WORKDIR ${GEOSERVER_HOME}
+
+USER ${GEOSERVER_GID}:0
 
 ENTRYPOINT ["/bin/bash", "/scripts/entrypoint.sh"]
