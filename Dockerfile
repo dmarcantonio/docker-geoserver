@@ -14,7 +14,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 #Install extra fonts to use with sld font markers
 RUN set -eux; \
     apt-get update; \
-    apt-get -y --no-install-recommends install \
+    apt-get -y install \
         locales gnupg2 wget ca-certificates rpl pwgen software-properties-common  iputils-ping \
         apt-transport-https curl gettext fonts-cantarell lmodern ttf-aenigma \
         ttf-bitstream-vera ttf-sjfonts tv-fonts  libapr1-dev libssl-dev  \
@@ -23,7 +23,7 @@ RUN set -eux; \
     curl https://deb.meteo.guru/velivole-keyring.asc |  apt-key add - \
     && echo "deb https://deb.meteo.guru/debian buster main" > /etc/apt/sources.list.d/meteo.guru.list \
     && apt-get update \
-    && apt-get -y --no-install-recommends install gdal-bin libgdal-java; \
+    && apt-get -y install gdal-bin libgdal-java; \
     dpkg-divert --local --rename --add /sbin/initctl \
     && (echo "Yes, do as I say!" | apt-get remove --force-yes login) \
     && apt-get clean \
