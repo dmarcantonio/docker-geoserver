@@ -14,7 +14,8 @@ ENV DEBIAN_FRONTEND=noninteractive
 #Install extra fonts to use with sld font markers
 RUN set -eux; \
     apt-get update; \
-    apt-get -y install \
+    apt-get -y install aptitude; \
+    aptitude -y install \
         locales gnupg2 wget ca-certificates rpl pwgen software-properties-common  iputils-ping \
         apt-transport-https curl gettext fonts-cantarell lmodern ttf-aenigma \
         ttf-bitstream-vera ttf-sjfonts tv-fonts  libapr1-dev libssl-dev  \
@@ -22,11 +23,11 @@ RUN set -eux; \
     # Install gdal3 - bullseye doesn't build libgdal-java anymore so we can't upgrade
     curl https://deb.meteo.guru/velivole-keyring.asc |  apt-key add - \
     && echo "deb https://deb.meteo.guru/debian buster main" > /etc/apt/sources.list.d/meteo.guru.list \
-    && apt-get update \
-    && apt-get -y install gdal-bin libgdal-java; \
+    && aptitude update \
+    && aptitude -y install gdal-bin libgdal-java; \
     dpkg-divert --local --rename --add /sbin/initctl \
-    && (echo "Yes, do as I say!" | apt-get remove --force-yes login) \
-    && apt-get clean \
+    && (echo "Yes, do as I say!" | aptitude remove --force-yes login) \
+    && aptitude clean \
     && rm -rf /var/lib/apt/lists/*; \
     # verify that the binary works
 	gosu nobody true
@@ -55,7 +56,7 @@ ADD scripts /scripts
 
 RUN echo $GS_VERSION > /scripts/geoserver_version.txt ;\
     chmod +x /scripts/*.sh;/scripts/setup.sh \
-    && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && aptitude clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 
 EXPOSE  $HTTPS_PORT
