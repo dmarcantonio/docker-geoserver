@@ -24,7 +24,7 @@ RUN useradd -l -m -d /home/${USER}/ -u ${GEOSERVER_UID} --gid ${GEOSERVER_GID} -
 
 #Install extra fonts to use with sld font markers
 RUN set -eux; \
-    aptitude update; \
+    apt-get update; \
     apt-get -y install aptitude; \
     aptitude -y install \
         locales gnupg2 wget ca-certificates rpl pwgen software-properties-common  iputils-ping \
