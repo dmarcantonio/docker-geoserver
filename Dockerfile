@@ -24,7 +24,7 @@ RUN useradd -l -m -d /home/${USER}/ -u ${GEOSERVER_UID} --gid ${GEOSERVER_GID} -
 
 #Install extra fonts to use with sld font markers
 RUN set -eux; \
-    apt-get update; \
+    aptitude update; \
     apt-get -y install aptitude; \
     aptitude -y install \
         locales gnupg2 wget ca-certificates rpl pwgen software-properties-common  iputils-ping \
@@ -65,28 +65,42 @@ ADD resources /tmp/resources
 ADD build_data /build_data
 ADD scripts /scripts
 
-RUN echo $GS_VERSION > /scripts/geoserver_version.txt ;\
+RUN groupadd -r ${GROUP_NAME} -g ${GEOSERVER_GID} && \
+    useradd -l -m -d /home/${USER}/ -u ${GEOSERVER_UID} --gid ${GEOSERVER_GID} -s /bin/bash -G ${GROUP_NAME} ${USER}; \
+    mkdir -p  ${GEOSERVER_DATA_DIR} ${CERT_DIR} ${FOOTPRINTS_DATA_DIR} ${FONTS_DIR} \
+             ${GEOWEBCACHE_CACHE_DIR} ${GEOSERVER_HOME} ${EXTRA_CONFIG_DIR} ${COMMUNITY_PLUGINS_DIR} ${STABLE_PLUGINS_DIR}; \
+    cp /build_data/stable_plugins.txt /stable_plugins && cp /build_data/community_plugins.txt /community_plugins && \
+    cp /build_data/letsencrypt-tomcat.xsl ${CATALINA_HOME}/conf/ssl-tomcat.xsl; \
+    echo $GS_VERSION > /scripts/geoserver_version.txt ;\
     chmod +x /scripts/*.sh;/scripts/setup.sh \
-    && aptitude clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-
-EXPOSE  $HTTPS_PORT
-
-# Create directories
-RUN mkdir -p ${GEOSERVER_DATA_DIR} ${CERT_DIR} ${FOOTPRINTS_DATA_DIR} ${FONTS_DIR} ${GEOWEBCACHE_CACHE_DIR} \
-${GEOSERVER_HOME} ${EXTRA_CONFIG_DIR}
-
-RUN chmod g=u /etc/passwd
-
-RUN chgrp -R 0 ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} ${GEOSERVER_DATA_DIR} \
+    && aptitude clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*;chown -R ${USER_NAME}:${GEO_GROUP_NAME} \
+    ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} ${GEOSERVER_DATA_DIR} \
     ${CERT_DIR} ${FONTS_DIR}  /home/${USER_NAME}/ ${COMMUNITY_PLUGINS_DIR} ${STABLE_PLUGINS_DIR} \
     ${GEOSERVER_HOME} ${EXTRA_CONFIG_DIR}  /usr/share/fonts/ /scripts /tomcat_apps.zip \
     /tmp/ ${GEOWEBCACHE_CACHE_DIR};chmod o+rw ${CERT_DIR}
 
-RUN echo 'figlet -t "Kartoza Docker GeoServer"' >> ~/.bashrc
+# RUN echo $GS_VERSION > /scripts/geoserver_version.txt ;\
+#     chmod +x /scripts/*.sh;/scripts/setup.sh \
+#     && aptitude clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-WORKDIR ${GEOSERVER_HOME}
+
+EXPOSE  $HTTPS_PORT
+
+
+# Create directories
+# RUN mkdir -p ${GEOSERVER_DATA_DIR} ${CERT_DIR} ${FOOTPRINTS_DATA_DIR} ${FONTS_DIR} ${GEOWEBCACHE_CACHE_DIR} \
+# ${GEOSERVER_HOME} ${EXTRA_CONFIG_DIR}
+
+RUN chmod g=u /etc/passwd
+
+# RUN chgrp -R 0 ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} ${GEOSERVER_DATA_DIR} \
+#     ${CERT_DIR} ${FONTS_DIR}  /home/${USER_NAME}/ ${COMMUNITY_PLUGINS_DIR} ${STABLE_PLUGINS_DIR} \
+#     ${GEOSERVER_HOME} ${EXTRA_CONFIG_DIR}  /usr/share/fonts/ /scripts /tomcat_apps.zip \
+#     /tmp/ ${GEOWEBCACHE_CACHE_DIR};chmod o+rw ${CERT_DIR}
 
 USER ${GEOSERVER_GID}:0
+RUN echo 'figlet -t "Kartoza Docker GeoServer"' >> ~/.bashrc
+# VOLUME ["${GEOSERVER_DATA_DIR}", "${CERT_DIR}", "${FOOTPRINTS_DATA_DIR}", "${FONTS_DIR}"]
+WORKDIR ${GEOSERVER_HOME}
 
 ENTRYPOINT ["/bin/bash", "/scripts/entrypoint.sh"]
