@@ -6,7 +6,7 @@ figlet -t "Kartoza Docker GeoServer"
 
 # Gosu preparations
 USER_ID=${GEOSERVER_UID:-1000}
-GROUP_ID=${GEOSERVER_GID:-1000}
+GROUP_ID=${GEOSERVER_GID:-10001}
 USER_NAME=${USER:-geoserveruser}
 GEO_GROUP_NAME=${GROUP_NAME:-geoserverusers}
 

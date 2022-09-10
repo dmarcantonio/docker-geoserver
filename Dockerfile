@@ -13,11 +13,15 @@ ARG DOWNLOAD_ALL_COMMUNITY_EXTENSIONS=1
 ARG HTTPS_PORT=8443
 
 ARG GEOSERVER_UID=1000
-ARG GEOSERVER_GID=100001
+ARG GEOSERVER_GID=10001
 ARG USER=geoserveruser
 ARG GROUP_NAME=geoserverusers
 
 ENV DEBIAN_FRONTEND=noninteractive
+
+RUN groupadd -r ${GROUP_NAME} -g ${GEOSERVER_GID}
+RUN useradd -l -m -d /home/${USER}/ -u ${GEOSERVER_UID} --gid ${GEOSERVER_GID} -s /bin/bash -G ${GROUP_NAME} ${USER}
+
 #Install extra fonts to use with sld font markers
 RUN set -eux; \
     apt-get update; \
@@ -72,7 +76,7 @@ EXPOSE  $HTTPS_PORT
 RUN mkdir -p ${GEOSERVER_DATA_DIR} ${CERT_DIR} ${FOOTPRINTS_DATA_DIR} ${FONTS_DIR} ${GEOWEBCACHE_CACHE_DIR} \
 ${GEOSERVER_HOME} ${EXTRA_CONFIG_DIR}
 
-RUN chmod g=u /etc/passwd && mkdir -p /home/${USER}
+RUN chmod g=u /etc/passwd
 
 RUN chgrp -R 0 ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} ${GEOSERVER_DATA_DIR} \
     ${CERT_DIR} ${FONTS_DIR}  /home/${USER_NAME}/ ${COMMUNITY_PLUGINS_DIR} ${STABLE_PLUGINS_DIR} \
