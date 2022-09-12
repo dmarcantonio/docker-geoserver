@@ -11,9 +11,6 @@ USER_NAME=${USER:-geoserveruser}
 USER_ID=$(id -u)
 GROUP_ID=$(id -g)
 
-log USER_NAME_LOG="${USER_NAME}"
-log USER_ID_LOG="${USER_ID}"
-log GROUP_ID_LOG="${GROUP_ID}"
 # GEO_GROUP_NAME=${GROUP_NAME:-geoserverusers}
 
 # Add group
@@ -46,7 +43,9 @@ export CLUSTER_CONFIG_DIR MONITOR_AUDIT_PATH CLUSTER_LOCKFILE INSTANCE_STRING
 
 /bin/bash /scripts/start.sh
 
-
+log USER_NAME_LOG="${USER_NAME}"
+log USER_ID_LOG="${USER_ID}"
+log GROUP_ID_LOG="${GROUP_ID}"
 
 log CLUSTER_CONFIG_DIR="${CLUSTER_CONFIG_DIR}"
 log MONITOR_AUDIT_PATH="${MONITOR_AUDIT_PATH}"
