@@ -76,7 +76,7 @@ RUN cp /build_data/stable_plugins.txt /stable_plugins
 RUN cp /build_data/community_plugins.txt /community_plugins
 RUN cp /build_data/letsencrypt-tomcat.xsl ${CATALINA_HOME}/conf/ssl-tomcat.xsl
 RUN echo $GS_VERSION > /scripts/geoserver_version.txt
-# RUN chmod +x /scripts/*.sh;/scripts/setup.sh
+RUN chmod +x /scripts/*.sh;/scripts/setup.sh
 RUN aptitude clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN chgrp -R 0 ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} ${GEOSERVER_DATA_DIR} ${CERT_DIR} \
