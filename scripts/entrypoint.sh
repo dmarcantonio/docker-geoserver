@@ -8,6 +8,12 @@ figlet -t "Kartoza Docker GeoServer"
 # USER_ID=${GEOSERVER_UID:-1000}
 # GROUP_ID=${GEOSERVER_GID:-10001}
 USER_NAME=${USER:-geoserveruser}
+USER_ID=$(id -u)
+GROUP_ID=$(id -g)
+
+log USER_NAME_LOG="${USER_NAME}"
+log USER_ID_LOG="${USER_ID}"
+log GROUP_ID_LOG="${GROUP_ID}"
 # GEO_GROUP_NAME=${GROUP_NAME:-geoserverusers}
 
 # Add group
@@ -91,7 +97,7 @@ export JAVA_OPTS="${JAVA_OPTS} ${GEOSERVER_OPTS}"
 # /tmp/ "${GEOWEBCACHE_CACHE_DIR}";chmod o+rw "${CERT_DIR}"
 
 if [[ -f ${GEOSERVER_HOME}/start.jar ]]; then
-  exec gosu ${USER_NAME} java "$JAVA_OPTS"  -jar start.jar
+  exec gosu ${USER_ID}:${GROUP_ID} java "$JAVA_OPTS"  -jar start.jar
 else
-  exec gosu ${USER_NAME} /usr/local/tomcat/bin/catalina.sh run
+  exec gosu ${USER_ID}:${GROUP_ID} /usr/local/tomcat/bin/catalina.sh run
 fi

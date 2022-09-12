@@ -12,10 +12,10 @@ ARG DOWNLOAD_ALL_STABLE_EXTENSIONS=1
 ARG DOWNLOAD_ALL_COMMUNITY_EXTENSIONS=1
 ARG HTTPS_PORT=8443
 
-ENV GEOSERVER_UID=1000
-ENV GEOSERVER_GID=10001
+# ENV GEOSERVER_UID=1000
+# ENV GEOSERVER_GID=10001
 ENV USER=geoserveruser
-ENV GROUP_NAME=geoserverusers
+# ENV GROUP_NAME=geoserverusers
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -81,19 +81,20 @@ RUN aptitude clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN chgrp -R 0 ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} ${GEOSERVER_DATA_DIR} ${CERT_DIR} \
         ${FONTS_DIR} /home/${USER}/ ${COMMUNITY_PLUGINS_DIR} ${STABLE_PLUGINS_DIR} ${GEOSERVER_HOME} \
-        ${EXTRA_CONFIG_DIR} /usr/share/fonts/ /scripts /tomcat_apps.zip /tmp/ ${GEOWEBCACHE_CACHE_DIR} && \
+        ${EXTRA_CONFIG_DIR} /usr/share/fonts/ /scripts /tmp/ ${GEOWEBCACHE_CACHE_DIR} && \
     chmod -R g=u ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} ${GEOSERVER_DATA_DIR} ${CERT_DIR} \
         ${FONTS_DIR} /home/${USER}/ ${COMMUNITY_PLUGINS_DIR} ${STABLE_PLUGINS_DIR} ${GEOSERVER_HOME} \
-        ${EXTRA_CONFIG_DIR} /usr/share/fonts/ /scripts /tomcat_apps.zip /tmp/ ${GEOWEBCACHE_CACHE_DIR}
+        ${EXTRA_CONFIG_DIR} /usr/share/fonts/ /scripts /tmp/ ${GEOWEBCACHE_CACHE_DIR}
 
-RUN chown -R ${GEOSERVER_UID}:${GEOSERVER_GID} ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} ${GEOSERVER_DATA_DIR} ${CERT_DIR} \
-        ${FONTS_DIR} /home/${USER}/ ${COMMUNITY_PLUGINS_DIR} ${STABLE_PLUGINS_DIR} ${GEOSERVER_HOME} \
-        ${EXTRA_CONFIG_DIR} /usr/share/fonts/ /scripts /tomcat_apps.zip /tmp/ ${GEOWEBCACHE_CACHE_DIR} && \
-    chmod 777 ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} ${GEOSERVER_DATA_DIR} ${CERT_DIR} \
-        ${FONTS_DIR} /home/${USER}/ ${COMMUNITY_PLUGINS_DIR} ${STABLE_PLUGINS_DIR} ${GEOSERVER_HOME} \
-        ${EXTRA_CONFIG_DIR} /usr/share/fonts/ /scripts /tomcat_apps.zip /tmp/ ${GEOWEBCACHE_CACHE_DIR}
+# RUN chown -R ${USER}:0 ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} ${GEOSERVER_DATA_DIR} ${CERT_DIR} \
+#         ${FONTS_DIR} /home/${USER}/ ${COMMUNITY_PLUGINS_DIR} ${STABLE_PLUGINS_DIR} ${GEOSERVER_HOME} \
+#         ${EXTRA_CONFIG_DIR} /usr/share/fonts/ /scripts /tmp/ ${GEOWEBCACHE_CACHE_DIR} && \
+#     chmod 777 ${CATALINA_HOME} ${FOOTPRINTS_DATA_DIR} ${GEOSERVER_DATA_DIR} ${CERT_DIR} \
+#         ${FONTS_DIR} /home/${USER}/ ${COMMUNITY_PLUGINS_DIR} ${STABLE_PLUGINS_DIR} ${GEOSERVER_HOME} \
+#         ${EXTRA_CONFIG_DIR} /usr/share/fonts/ /scripts /tmp/ ${GEOWEBCACHE_CACHE_DIR}
 
-RUN chmod -R g=u /etc/passwd
+RUN chgrp -R 0 /etc/passwd && \
+    chmod -R g=u /etc/passwd
 
 # RUN echo $GS_VERSION > /scripts/geoserver_version.txt ;\
 #     chmod +x /scripts/*.sh;/scripts/setup.sh \
@@ -107,7 +108,7 @@ EXPOSE $HTTPS_PORT
 # RUN mkdir -p ${GEOSERVER_DATA_DIR} ${CERT_DIR} ${FOOTPRINTS_DATA_DIR} ${FONTS_DIR} ${GEOWEBCACHE_CACHE_DIR} \
 # ${GEOSERVER_HOME} ${EXTRA_CONFIG_DIR}
 
-USER ${GEOSERVER_GID}:0
+# USER ${USER}
 
 RUN echo 'figlet -t "Kartoza Docker GeoServer"' >> ~/.bashrc
 
