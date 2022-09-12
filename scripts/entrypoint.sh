@@ -5,10 +5,10 @@ set -e
 figlet -t "Kartoza Docker GeoServer"
 
 # Gosu preparations
-USER_ID=${GEOSERVER_UID:-1000}
-GROUP_ID=${GEOSERVER_GID:-10001}
+# USER_ID=${GEOSERVER_UID:-1000}
+# GROUP_ID=${GEOSERVER_GID:-10001}
 USER_NAME=${USER:-geoserveruser}
-GEO_GROUP_NAME=${GROUP_NAME:-geoserverusers}
+# GEO_GROUP_NAME=${GROUP_NAME:-geoserverusers}
 
 # Add group
 # if [ ! $(getent group "${GEO_GROUP_NAME}") ]; then
@@ -85,10 +85,10 @@ export JAVA_OPTS="${JAVA_OPTS} ${GEOSERVER_OPTS}"
 
 
 # Chown again - seems to fix issue with resolving all created directories
-chown -R "${USER_NAME}":"${GEO_GROUP_NAME}" "${CATALINA_HOME}" "${FOOTPRINTS_DATA_DIR}" "${GEOSERVER_DATA_DIR}" \
-"${CERT_DIR}" "${FONTS_DIR}"  /home/"${USER_NAME}"/ "${COMMUNITY_PLUGINS_DIR}" "${STABLE_PLUGINS_DIR}" \
-"${GEOSERVER_HOME}" "${EXTRA_CONFIG_DIR}"  /usr/share/fonts/ /scripts /tomcat_apps.zip \
-/tmp/ "${GEOWEBCACHE_CACHE_DIR}";chmod o+rw "${CERT_DIR}"
+# chown -R "${USER_NAME}":"${GEO_GROUP_NAME}" "${CATALINA_HOME}" "${FOOTPRINTS_DATA_DIR}" "${GEOSERVER_DATA_DIR}" \
+# "${CERT_DIR}" "${FONTS_DIR}"  /home/"${USER_NAME}"/ "${COMMUNITY_PLUGINS_DIR}" "${STABLE_PLUGINS_DIR}" \
+# "${GEOSERVER_HOME}" "${EXTRA_CONFIG_DIR}"  /usr/share/fonts/ /scripts /tomcat_apps.zip \
+# /tmp/ "${GEOWEBCACHE_CACHE_DIR}";chmod o+rw "${CERT_DIR}"
 
 if [[ -f ${GEOSERVER_HOME}/start.jar ]]; then
   exec gosu ${USER_NAME} java "$JAVA_OPTS"  -jar start.jar
