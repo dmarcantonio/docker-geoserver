@@ -37,11 +37,11 @@ fi
 
 if [ -z "${DOWNLOAD_ALL_STABLE_EXTENSIONS}" ] || [ "${DOWNLOAD_ALL_STABLE_EXTENSIONS}" -eq 0 ]; then
   plugin=$(head -n 1 /stable_plugins/stable_plugins.txt)
-  approved_plugins_url="${STABLE_PLUGIN_BASE_URL}/projects/geoserver/GeoServer/${GS_VERSION}/extensions/geoserver-${GS_VERSION}-${plugin}.zip"
+  approved_plugins_url="${STABLE_PLUGIN_BASE_URL}/projects/geoserver/files/GeoServer/${GS_VERSION}/extensions/geoserver-${GS_VERSION}-${plugin}.zip"
   download_extension "${approved_plugins_url}" "${plugin}" /stable_plugins
 else
   for plugin in $(cat /stable_plugins/stable_plugins.txt); do
-    approved_plugins_url="${STABLE_PLUGIN_BASE_URL}/projects/geoserver/GeoServer/${GS_VERSION}/extensions/geoserver-${GS_VERSION}-${plugin}.zip"
+    approved_plugins_url="${STABLE_PLUGIN_BASE_URL}/projects/geoserver/files/GeoServer/${GS_VERSION}/extensions/geoserver-${GS_VERSION}-${plugin}.zip"
     download_extension "${approved_plugins_url}" "${plugin}" /stable_plugins
   done
 fi
@@ -69,7 +69,7 @@ array=(geoserver-${GS_VERSION}-vectortiles-plugin.zip geoserver-${GS_VERSION}-wp
   geoserver-${GS_VERSION}-pyramid-plugin.zip geoserver-${GS_VERSION}-gdal-plugin.zip
   geoserver-${GS_VERSION}-monitor-plugin.zip geoserver-${GS_VERSION}-inspire-plugin.zip geoserver-${GS_VERSION}-csw-plugin.zip )
 for i in "${array[@]}"; do
-  url="${STABLE_PLUGIN_BASE_URL}/projects/geoserver/GeoServer/${GS_VERSION}/extensions/${i}"
+  url="${STABLE_PLUGIN_BASE_URL}/projects/geoserver/files/GeoServer/${GS_VERSION}/extensions/${i}"
   download_extension "${url}" "${i%.*}" ${resources_dir}/plugins
 done
 
