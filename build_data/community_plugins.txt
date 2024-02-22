@@ -1,0 +1,2 @@
+s3-geotiff-plugin
+sec-oauth2-openid-connect-plugin
