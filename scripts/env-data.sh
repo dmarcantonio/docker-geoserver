@@ -17,10 +17,46 @@ if [ -z "${OPTIMIZE_LINE_WIDTH}" ]; then
 fi
 log OPTIMIZE_LINE_WIDTH="${OPTIMIZE_LINE_WIDTH}"
 
+if [ -z "${WMS_DIR_INTEGRATION}" ]; then
+  WMS_DIR_INTEGRATION=false
+fi
+
+if [ -z "${REQUIRE_TILED_PARAMETER}" ]; then
+  REQUIRE_TILED_PARAMETER=true
+fi
+
+
+if [ -z "${WMSC_ENABLED}" ]; then
+  WMSC_ENABLED=true
+fi
+
+if [ -z "${DISKQUOTA_DISABLED}" ]; then
+  DISKQUOTA_DISABLED=false
+fi
+
+
+
+if [ -z "${TMS_ENABLED}" ]; then
+  TMS_ENABLED=true
+fi
+
+
+if [ -z "${SECURITY_ENABLED}" ]; then
+  SECURITY_ENABLED=false
+fi
+
 if [ -z "${DISK_QUOTA_SIZE}" ]; then
   DISK_QUOTA_SIZE=20
 fi
 log DISK_QUOTA_SIZE="${DISK_QUOTA_SIZE}"
+
+if [ -z "${DISK_QUOTA_FREQUENCY}" ]; then
+  DISK_QUOTA_FREQUENCY=5
+fi
+
+if [ -z "${POSTGRES_SCHEMA}" ]; then
+    POSTGRES_SCHEMA=public
+fi
 
 if [ -z "${SSL}" ]; then
   SSL=false
@@ -227,6 +263,10 @@ if [ -z "${RECREATE_DATADIR}" ]; then
 fi
 log RECREATE_DATADIR="${RECREATE_DATADIR}"
 
+if [ -z "${RECREATE_DISKQUOTA}" ]; then
+    RECREATE_DISKQUOTA=false
+fi
+
 if [ -z "${RESET_ADMIN_CREDENTIALS}" ]; then
   RESET_ADMIN_CREDENTIALS=false
 fi
@@ -339,7 +379,7 @@ if [ -z "${TOMCAT_USER}" ]; then
 fi
 log TOMCAT_USER="${TOMCAT_USER}"
 
-file_env 'GEOSERVER_ADMIN_USER'
+
 if [ -z "${GEOSERVER_ADMIN_USER}" ]; then
     GEOSERVER_ADMIN_USER='admin'
 fi
@@ -398,4 +438,59 @@ if [ -z "${FORCE_DOWNLOAD_COMMUNITY_EXTENSIONS}" ]; then
 fi
 log FORCE_DOWNLOAD_COMMUNITY_EXTENSIONS="${FORCE_DOWNLOAD_COMMUNITY_EXTENSIONS}"
 
+if [ -z "${DISABLE_CORS}" ]; then
+  DISABLE_CORS=false
+fi
 
+if [ -z "${DISABLE_SECURITY_FILTER}" ]; then
+  DISABLE_SECURITY_FILTER=false
+fi
+if [ -z "${ACTIVATE_PROXY_HEADERS}" ]; then
+  ACTIVATE_PROXY_HEADERS=false
+fi
+
+if [ -z "${UPDATE_LOGGING_PROFILES}" ]; then
+  UPDATE_LOGGING_PROFILES=false
+fi
+
+if [ -z "${RELINQUISH_LOG4J_CONTROL}" ]; then
+  RELINQUISH_LOG4J_CONTROL=false
+fi
+
+if [ -z "${USE_DEFAULT_CREDENTIALS}" ]; then
+  USE_DEFAULT_CREDENTIALS=false
+fi
+
+if [ -z "${CHOWN_DATA_DIR}" ]; then
+  CHOWN_DATA_DIR=true
+fi
+
+if [ -z "${CHOWN_GWC_DATA_DIR}" ]; then
+  CHOWN_GWC_DATA_DIR=true
+fi
+
+if [ -z "${GEOSERVER_CONTEXT_ROOT}" ]; then
+  # For runtime only, do not change at build-time.
+  GEOSERVER_CONTEXT_ROOT=geoserver
+fi
+
+if [ -z "${SHOW_PASSWORD}" ]; then
+  # For runtime only, do not change at build-time.
+  SHOW_PASSWORD=true
+fi
+
+if [ -z "${RUN_AS_ROOT}" ]; then
+  RUN_AS_ROOT=false
+fi
+
+if [ -z "${JDBC_CONFIG_ENABLED}" ]; then
+  JDBC_CONFIG_ENABLED=true
+fi
+
+if [ -z "${JDBC_STORE_ENABLED}" ]; then
+  JDBC_STORE_ENABLED=true
+fi
+
+if [ -z "${JDBC_IGNORE_PATHS}" ]; then
+  JDBC_IGNORE_PATHS='data,jdbcstore,jdbcconfig,temp,tmp,logs'
+fi

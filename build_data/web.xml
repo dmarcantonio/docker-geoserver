@@ -461,13 +461,17 @@
   <!--   blockContentTypeSniffingEnabled                                    -->
   <!--                       Should the header that blocks content type     -->
   <!--                       sniffing be added to every response? [true]    -->
-<!--
+    <!-- SECURITY_START -->
     <filter>
         <filter-name>httpHeaderSecurity</filter-name>
         <filter-class>org.apache.catalina.filters.HttpHeaderSecurityFilter</filter-class>
         <async-supported>true</async-supported>
+        <init-param>
+            <param-name>antiClickJackingOption</param-name>
+            <param-value>SAMEORIGIN</param-value>
+        </init-param>
     </filter>
--->
+    <!-- SECURITY_END -->
 
   <!-- A filter that sets character encoding that is used to decode -->
   <!-- parameters in a POST request -->
@@ -558,13 +562,13 @@
   <!-- ==================== Built In Filter Mappings ====================== -->
 
   <!-- The mapping for the HTTP header security Filter -->
-<!--
+    <!-- SECURITY_START -->
     <filter-mapping>
         <filter-name>httpHeaderSecurity</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>REQUEST</dispatcher>
     </filter-mapping>
--->
+    <!-- SECURITY_END -->
 
   <!-- The mapping for the Set Character Encoding Filter -->
 <!--
@@ -589,12 +593,20 @@
         <url-pattern>*.shtml</url-pattern>
     </filter-mapping>
 -->
+
+    <!-- Note: the CORS_* comments surrounding this section need to be left intact
+               so the entrypoint script can deactivate Cors settings if DISABLE_CORS is set -->
+    <!-- CORS_START -->
     <filter>
         <filter-name>CorsFilter</filter-name>
         <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
         <init-param>
             <param-name>cors.allowed.origins</param-name>
             <param-value>*</param-value>
+        </init-param>
+        <init-param>
+            <param-name>cors.allowed.methods</param-name>
+            <param-value>GET,POST,HEAD,OPTIONS,PUT</param-value>
         </init-param>
         <init-param>
             <param-name>cors.allowed.headers</param-name>
@@ -604,12 +616,25 @@
             <param-name>cors.exposed.headers</param-name>
             <param-value>Access-Control-Allow-Origin,Access-Control-Allow-Credentials</param-value>
         </init-param>
+        
+        <init-param>
+            <param-name>cors.support.credentials</param-name>
+            <param-value>false</param-value>
+        </init-param>
+
+
+        <init-param>
+            <param-name>cors.preflight.maxage</param-name>
+            <param-value>10</param-value>
+        </init-param>
+
     </filter>
+
     <filter-mapping>
         <filter-name>CorsFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
-
+    <!-- CORS_END -->
 
   <!-- ==================== Default Session Configuration ================= -->
   <!-- You can set the default session timeout (in minutes) for all newly   -->
