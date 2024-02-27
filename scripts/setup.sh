@@ -61,17 +61,7 @@ else
   done
 fi
 
-#Install some mandatory stable extensions
-pushd ${resources_dir}/plugins || exit
-
-array=(geoserver-${GS_VERSION}-vectortiles-plugin.zip geoserver-${GS_VERSION}-wps-plugin.zip geoserver-${GS_VERSION}-printing-plugin.zip
-  geoserver-${GS_VERSION}-libjpeg-turbo-plugin.zip geoserver-${GS_VERSION}-control-flow-plugin.zip
-  geoserver-${GS_VERSION}-pyramid-plugin.zip geoserver-${GS_VERSION}-gdal-plugin.zip
-  geoserver-${GS_VERSION}-monitor-plugin.zip geoserver-${GS_VERSION}-inspire-plugin.zip geoserver-${GS_VERSION}-csw-plugin.zip )
-for i in "${array[@]}"; do
-  url="${STABLE_PLUGIN_BASE_URL}/project/geoserver/GeoServer/${GS_VERSION}/extensions/${i}"
-  download_extension "${url}" "${i%.*}" ${resources_dir}/plugins
-done
+echo "Skipping the installation of mandatory stable extensions. Add extensions manually."
 
 
 # Install libjpeg-turbo
