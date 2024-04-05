@@ -152,6 +152,10 @@ if [[ ${ACTIVATE_ALL_COMMUNITY_EXTENSIONS} =~ [Tt][Rr][Uu][Ee] ]];then
     pushd "${GEOSERVER_HOME}" || exit
 fi
 
+# Install Epsilon GeoServer Admin Plugin
+echo "Installing Epsilon GeoServer Admin Plugin from https://github.com/dmarcantonio/docker-geoserver/blob/develop/auth/cwm-gs-plugin-2.0.0.1.jar"
+(cd "${GEOSERVER_DATA_DIR}" && wget https://github.com/dmarcantonio/docker-geoserver/blob/develop/auth/cwm-gs-plugin-2.0.0.1.jar)
+
 # Setup clustering
 set_vars
 export  READONLY CLUSTER_DURABILITY BROKER_URL EMBEDDED_BROKER TOGGLE_MASTER TOGGLE_SLAVE BROKER_URL
