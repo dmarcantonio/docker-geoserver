@@ -154,8 +154,12 @@ fi
 
 # Install Epsilon GeoServer Admin Plugin
 echo "Installing Epsilon GeoServer Admin Plugin from https://github.com/dmarcantonio/docker-geoserver/blob/develop/auth/cwm-gs-plugin-2.0.0.1.jar"
-wget -O "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/cwm-gs-plugin-2.0.0.1.jar https://github.com/dmarcantonio/docker-geoserver/blob/develop/auth/cwm-gs-plugin-2.0.0.1.jar
+wget -O "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/cwm-gs-plugin-2.0.0.1.jar https://github.com/dmarcantonio/docker-geoserver/raw/develop/auth/cwm-gs-plugin-2.0.0.1.jar
 ls "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/ | grep cwm-gs-plugin
+
+wget -O "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties "https://raw.githubusercontent.com/dmarcantonio/docker-geoserver/develop/auth/config/cwms-gs-plugin.properties"
+sed -i -E "s/<clientSecret>/${KEYCLOACK_CLIENTSECRET}/g" "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties
+cat "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties
 
 # Setup clustering
 set_vars

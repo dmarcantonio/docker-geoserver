@@ -35,6 +35,9 @@ services:
         - GEOSERVER_ADMIN_USER=${GEOSERVER_ADMIN_USER}
         - INITIAL_MEMORY=${INITIAL_MEMORY}
         - MAXIMUM_MEMORY=${MAXIMUM_MEMORY}
+        - KEYCLOACK_CLIENTSECRET=${KEYCLOACK_CLIENTSECRET}
+        - KEYCLOACK_CLIENTID=${KEYCLOACK_CLIENTID}
+        - KEYCLOACK_TOKEN_URL=${KEYCLOACK_TOKEN_URL}
       depends_on:
         db:
           condition: service_healthy
