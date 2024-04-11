@@ -9,3 +9,4 @@ resources/overlays/*
 btsync-media.env 
 btsync-db.env 
 geoserver-data
+auth/cwm-gs-plugin-assembly-distribution-2.0.0.1-distribution.zip

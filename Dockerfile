@@ -65,6 +65,8 @@ WORKDIR /scripts
 ADD resources /tmp/resources
 ADD build_data /build_data
 ADD scripts /scripts
+
+# TODO download plugin and zip from artifactory
 ADD auth /auth
 
 # RUN groupadd -r ${GROUP_NAME} -g ${GEOSERVER_GID}

@@ -156,8 +156,14 @@ fi
 echo "contents of /auth"
 set -e
 ls /auth
+
+unzip -o /auth/cwm-gs-plugin-assembly-distribution-2.0.0.1-distribution.zip -d /tmp/cwm
+cp -n /tmp/cwm/jars/* "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
+
 cp /auth/cwm-gs-plugin-2.0.0.1.jar "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
 cp /auth/cwms-gs-plugin.properties "${GEOSERVER_DATA_DIR}"
+
+
 echo "contents of ${CATALINA_HOME}/webapps/geoserver/WEB-INF/lib/"
 ls "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib
 
