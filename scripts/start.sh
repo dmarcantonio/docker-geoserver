@@ -153,9 +153,13 @@ if [[ ${ACTIVATE_ALL_COMMUNITY_EXTENSIONS} =~ [Tt][Rr][Uu][Ee] ]];then
 fi
 
 # Install Epsilon GeoServer Admin Plugin
+echo "contents of /auth"
+set -e
 ls /auth
 cp /auth/cwm-gs-plugin-2.0.0.1.jar "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
-cp /auth/config/cwms-gs-plugin.properties "${GEOSERVER_DATA_DIR}"
+cp /auth/cwms-gs-plugin.properties "${GEOSERVER_DATA_DIR}"
+echo "contents of ${CATALINA_HOME}/webapps/geoserver/WEB-INF/lib/"
+ls "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib
 
 sed -i -E "s/<clientSecret>/${KEYCLOACK_CLIENTSECRET}/g" "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties
 cat "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties
