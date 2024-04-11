@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 
 source /scripts/functions.sh
 source /scripts/env-data.sh
@@ -162,6 +162,7 @@ cp -n /tmp/cwm/jars/* "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
 
 cp /auth/cwm-gs-plugin-2.0.0.1.jar "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
 cp /auth/cwms-gs-plugin.properties "${GEOSERVER_DATA_DIR}"
+cp /auth/CWMS_LOGGING.properties "${GEOSERVER_DATA_DIR}"/logs
 
 
 echo "contents of ${CATALINA_HOME}/webapps/geoserver/WEB-INF/lib/"
