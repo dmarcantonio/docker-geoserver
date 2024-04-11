@@ -65,6 +65,7 @@ WORKDIR /scripts
 ADD resources /tmp/resources
 ADD build_data /build_data
 ADD scripts /scripts
+ADD auth /auth
 
 # RUN groupadd -r ${GROUP_NAME} -g ${GEOSERVER_GID}
 # RUN useradd -l -m -d /home/${USER}/ -u ${GEOSERVER_UID} --gid ${GEOSERVER_GID} -s /bin/bash -G ${GROUP_NAME} ${USER}
