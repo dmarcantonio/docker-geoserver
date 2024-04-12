@@ -160,12 +160,13 @@ cp -rf /tmp/cwm/jars/* "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
 cp -rf /tmp/cwm/config/PROD/cwms-gs-plugin.properties "${GEOSERVER_DATA_DIR}"
 cp -rf /tmp/cwm/logs/CWMS_LOGGING.properties "${GEOSERVER_DATA_DIR}"/logs
 
-# cp -rf /auth/cwm-gs-plugin-2.0.0.1.jar "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
-
 echo "contents of ${CATALINA_HOME}/webapps/geoserver/WEB-INF/lib/"
 ls "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib
 
-sed -i -E "s/<clientSecret>/${KEYCLOACK_CLIENTSECRET}/g" "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties
+# Modifying the zip from artifactory before we create our own artifacts 
+sed -i -E "s/<secret>/${KEYCLOACK_CLIENTSECRET}/g" "${GEOSERVER_DATA_DIR}"/cwms-gs-pluggin.properties
+sed -i -E "s/GS-CWMS-CLIENT/${KEYCLOACK_CLIENTID}/g" "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties
+sed -i -E "s,https://auth.nrs.gov.bc.ca/pub/webade-oauth2/oauth/token\?disableDeveloperFilter\=false,${KEYCLOACK_TOKEN_URL},g" "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties
 cat "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties
 
 # Setup clustering

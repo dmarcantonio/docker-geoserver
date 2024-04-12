@@ -34,4 +34,6 @@ services:
         - MAXIMUM_MEMORY=${MAXIMUM_MEMORY}
         - RECREATE_DATADIR=${RECREATE_DATADIR}
         - KEYCLOACK_CLIENTSECRET=testsecret
+        - KEYCLOACK_CLIENTID=epsilon-5305
+        - KEYCLOACK_TOKEN_URL=https://dev.loginproxy.gov.bc.ca/auth/realms/standard/protocol/openid-connect/token
         - DOWNLOAD_ALL_COMMUNITY_EXTENSIONS='1'
