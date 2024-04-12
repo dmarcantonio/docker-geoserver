@@ -152,8 +152,8 @@ if [[ ${ACTIVATE_ALL_COMMUNITY_EXTENSIONS} =~ [Tt][Rr][Uu][Ee] ]];then
     pushd "${GEOSERVER_HOME}" || exit
 fi
 
-# Install Epsilon GeoServer Admin Plugin
-set -e
+echo "Installing Epsilon GeoServer Admin Plugin"
+
 curl -o ${GEOSERVER_HOME}/cwm-gs-plugin-assembly-distribution-2.0.0.1-distribution.zip https://apps.nrs.gov.bc.ca/pub/artifactory/ext-binaries-local/geoserver/cwm-gs-plugin-assembly-distribution-2.0.0.1-distribution.zip
 unzip -o ${GEOSERVER_HOME}/cwm-gs-plugin-assembly-distribution-2.0.0.1-distribution.zip -d /tmp/cwm
 cp -rf /tmp/cwm/jars/* "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
@@ -164,7 +164,7 @@ echo "contents of ${CATALINA_HOME}/webapps/geoserver/WEB-INF/lib/"
 ls "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib
 
 # Modifying the zip from artifactory before we create our own artifacts 
-sed -i -E "s/<secret>/${KEYCLOACK_CLIENTSECRET}/g" "${GEOSERVER_DATA_DIR}"/cwms-gs-pluggin.properties
+sed -i -E "s/<secret>/${KEYCLOACK_CLIENTSECRET}/g" "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties
 sed -i -E "s/GS-CWMS-CLIENT/${KEYCLOACK_CLIENTID}/g" "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties
 sed -i -E "s,https://auth.nrs.gov.bc.ca/pub/webade-oauth2/oauth/token\?disableDeveloperFilter\=false,${KEYCLOACK_TOKEN_URL},g" "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties
 cat "${GEOSERVER_DATA_DIR}"/cwms-gs-plugin.properties
