@@ -156,14 +156,13 @@ fi
 echo "contents of /auth"
 set -e
 ls /auth
+curl -o ${GEOSERVER_HOME}/cwm-gs-plugin-assembly-distribution-2.0.0.1-distribution.zip https://apps.nrs.gov.bc.ca/pub/artifactory/ext-binaries-local/geoserver/cwm-gs-plugin-assembly-distribution-2.0.0.1-distribution.zip
+unzip -o ${GEOSERVER_HOME}/cwm-gs-plugin-assembly-distribution-2.0.0.1-distribution.zip -d /tmp/cwm
+cp -rf /tmp/cwm/jars/* "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
+cp -rf /tmp/cwm/config/PROD/cwms-gs-plugin.properties "${GEOSERVER_DATA_DIR}"
+cp -rf /tmp/cwm/logs/CWMS_LOGGING.properties "${GEOSERVER_DATA_DIR}"/logs
 
-unzip -o /auth/cwm-gs-plugin-assembly-distribution-2.0.0.1-distribution.zip -d /tmp/cwm
-cp -n /tmp/cwm/jars/* "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
-
-cp /auth/cwm-gs-plugin-2.0.0.1.jar "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
-cp /auth/cwms-gs-plugin.properties "${GEOSERVER_DATA_DIR}"
-cp /auth/CWMS_LOGGING.properties "${GEOSERVER_DATA_DIR}"/logs
-
+# cp -rf /auth/cwm-gs-plugin-2.0.0.1.jar "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
 
 echo "contents of ${CATALINA_HOME}/webapps/geoserver/WEB-INF/lib/"
 ls "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib
