@@ -153,9 +153,7 @@ if [[ ${ACTIVATE_ALL_COMMUNITY_EXTENSIONS} =~ [Tt][Rr][Uu][Ee] ]];then
 fi
 
 # Install Epsilon GeoServer Admin Plugin
-echo "contents of /auth"
 set -e
-ls /auth
 curl -o ${GEOSERVER_HOME}/cwm-gs-plugin-assembly-distribution-2.0.0.1-distribution.zip https://apps.nrs.gov.bc.ca/pub/artifactory/ext-binaries-local/geoserver/cwm-gs-plugin-assembly-distribution-2.0.0.1-distribution.zip
 unzip -o ${GEOSERVER_HOME}/cwm-gs-plugin-assembly-distribution-2.0.0.1-distribution.zip -d /tmp/cwm
 cp -rf /tmp/cwm/jars/* "${CATALINA_HOME}"/webapps/geoserver/WEB-INF/lib/
